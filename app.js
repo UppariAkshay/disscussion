@@ -29,7 +29,7 @@ const convertDbObjectIntoResponseObject = (dbObject) => {
   return {
     playerId: dbObject.player_id,
     playerName: dbObject.player_name,
-    jerseyNumber: dbObject.jerseyNumber,
+    jerseyNumber: dbObject.jersey_number,
     role: dbObject.role,
   };
 };
@@ -71,11 +71,13 @@ app.get("/players/:playerId/", async (request, response) => {
 });
 
 app.put("/players/:playerId/", async (request, response) => {
-  const dataToBeUpdated = request.body;
   const { playerId } = request.params;
-  const { playerName, jerseyNumber, role } = dataToBeUpdated;
-  const sqlQuery = `UPDATE cricket_team
-        SET player_name = '${playerName}',
+  const { playerName, jerseyNumber, role } = request.body;
+  const sqlQuery = `
+  UPDATE 
+  cricket_team
+        SET
+        player_name = '${playerName}',
         jersey_number = ${jerseyNumber},
         role = '${role}'
         WHERE player_id = ${playerId}`;
